@@ -1,0 +1,58 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Fungsi untuk menerima input data
+def input_data():
+    n = int(input("Masukkan jumlah data: "))
+    x = []
+    y = []
+    for i in range(n):
+        xi = float(input(f"Masukkan nilai x[{i + 1}]: "))
+        yi = float(input(f"Masukkan nilai y[{i + 1}]: "))
+        x.append(xi)
+        y.append(yi)
+    return np.array(x), np.array(y)
+
+# Fungsi regresi linier
+def linear_regression(x, y):
+    n = len(x)
+    sum_x = np.sum(x)
+    sum_y = np.sum(y)
+    sum_xy = np.sum(x * y)
+    sum_x2 = np.sum(x**2)
+
+    b = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x**2)
+    a = (sum_y - b * sum_x) / n
+    return a, b
+
+# Fungsi untuk menghitung Mean Squared Error (MSE)
+def mean_squared_error(y_actual, y_pred):
+    return np.sum((y_actual - y_pred)**2) / len(y_actual)
+
+# Input data
+x, y = input_data()
+
+# Hitung regresi linier
+a, b = linear_regression(x, y)
+
+# Hitung nilai prediksi
+y_pred = a + b * x
+
+# Hitung MSE
+mse = mean_squared_error(y, y_pred)
+
+# Tampilkan hasil
+print(f"Intersep (a): {a:.2f}")
+print(f"Koefisien (b): {b:.2f}")
+print(f"Mean Squared Error (MSE): {mse:.2f}")
+
+# Plot data asli dan garis regresi linier
+plt.scatter(x, y, color='red', label='Data Asli')  # Plot data asli
+plt.plot(x, y_pred, color='blue', label=f'Regresi Linier: y = {a:.2f} + {b:.2f}x')  # Plot garis regresi
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Grafik Regresi Linier')
+plt.legend()
+plt.grid()
+plt.show()
+3
